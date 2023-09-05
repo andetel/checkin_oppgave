@@ -1,35 +1,32 @@
-import {Starship} from "../interfaces/Starship";
-import {Vehicle} from "../interfaces/Vehicle";
 import {fetchStarships} from "../GraphQLClient/starshipClient";
 import {fetchVehicles} from "../GraphQLClient/vehicleClient";
 import {makeAutoObservable, runInAction} from "mobx";
+import {StarshipOrVehicle} from "../interfaces/StarshipOrVehicle";
+import {RootStore} from "./root.store";
 
-class Store {
-    starships: Starship[] = []
-    vehicles: Vehicle[] = []
+export class VehicleStore {
+    rootStore: RootStore
+    vehicles: StarshipOrVehicle[] = []
 
-    constructor() {
+    constructor(rootStore: RootStore) {
+        this.rootStore = rootStore
         makeAutoObservable(this)
         runInAction(this.prefetchData)
     }
 
-    createStarship(starship: Starship) {
-        this.starships.push(starship)
-    }
-
-    createVehicle(vehicle: Vehicle) {
+    createVehicle(vehicle: StarshipOrVehicle) {
         this.vehicles.push(vehicle)
     }
 
     get totalVehicles() {
-        return this.vehicles.length + this.starships.length
+        return this.vehicles.length
     }
 
     prefetchData = () => {
         fetchStarships()
             .then(data => {
                 for (let i = 0; i < data.length; i++) {
-                    this.createStarship(data[i])
+                    this.createVehicle(data[i])
                 }
             })
 
