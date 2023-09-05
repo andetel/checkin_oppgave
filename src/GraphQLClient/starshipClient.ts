@@ -15,7 +15,8 @@ export const fetchStarships = async (): Promise<Starship[]> => {
                     hyperdriveRating,                    
                     length,
                     manufacturers,
-                    maxAtmospheringSpeed
+                    maxAtmospheringSpeed,
+                    name
                 }
             }
         }
