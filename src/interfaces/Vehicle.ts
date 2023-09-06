@@ -1,9 +1,9 @@
 export interface Vehicle {
     crew: string,
-    costInCredits: Number,
-    maxAtmospheringSpeed: Number,
-    cargoCapacity: Number,
-    length: Number,
+    costInCredits: number,
+    maxAtmospheringSpeed: number,
+    cargoCapacity: number,
+    length: number,
     manufacturers: Array<string>,
     name: string
 }

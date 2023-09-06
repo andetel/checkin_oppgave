@@ -15,6 +15,16 @@ export class CartStore {
         return this.items.length
     }
 
+    get totalCost() {
+        let total = 0
+
+        this.items.forEach((data) => {
+            total += data.costInCredits
+        })
+
+        return total
+    }
+
     addItem(vehicle: StarshipOrVehicle) {
         this.items.push(vehicle)
     }

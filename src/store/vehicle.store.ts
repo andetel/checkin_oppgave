@@ -8,6 +8,10 @@ export class VehicleStore {
     rootStore: RootStore
     vehicles: StarshipOrVehicle[] = []
 
+    FILTERS = [
+        { type: "crew", key: "crew", min: 0, max: 0 }
+    ]
+
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore
         makeAutoObservable(this)

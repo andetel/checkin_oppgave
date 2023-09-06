@@ -1,10 +1,10 @@
 export interface Starship {
     crew: string,
-    costInCredits: Number,
-    maxAtmospheringSpeed: Number,
-    hyperdriveRating: Number,
-    cargoCapacity: Number,
-    length: Number,
+    costInCredits: number,
+    maxAtmospheringSpeed: number,
+    hyperdriveRating: number,
+    cargoCapacity: number,
+    length: number,
     manufacturers: Array<string>,
     name: string
 }
