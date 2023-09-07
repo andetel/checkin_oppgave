@@ -9,8 +9,8 @@ export const CardList = observer(() => {
     return (
         <div className="flex flex-row flex-wrap max-w-screen-xl justify-center gap-3">
             {
-                vehicleStore.vehicles.map((data) => (
-                    <Card key={data.name} vehicle={data} />
+                vehicleStore.vehiclesDisplayed.map((data) => (
+                    <Card key={data.name} vehicle={data} inCart={false}/>
                 ))
             }
         </div>
