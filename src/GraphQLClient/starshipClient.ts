@@ -1,5 +1,4 @@
 import {GraphQLClient, gql} from "graphql-request";
-import {Starship} from "../interfaces/Starship";
 import {GraphQLStarshipResponse} from "../interfaces/GraphQLStarshipResponse";
 import {Vehicle} from "../interfaces/Vehicle";
 

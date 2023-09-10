@@ -3,6 +3,9 @@ import {useEffect, useRef, useState} from "react";
 export const NumberRangeFilter = ({ heading, handler }: { heading: string, handler: Function }) => {
     const dropdown = useRef<null | HTMLDivElement>(null)
 
+    const fromRef = useRef<null | HTMLInputElement>(null)
+    const toRef = useRef<null | HTMLInputElement>(null)
+
     const [fromInput, setFromInput] = useState<number>(0)
     const [toInput, setToInput] = useState<number>(0)
 
@@ -19,6 +22,16 @@ export const NumberRangeFilter = ({ heading, handler }: { heading: string, handl
     const reset = () => {
         setFromInput(0)
         setToInput(0)
+
+        if (fromRef.current) {
+            fromRef.current.value = "0"
+        }
+
+        if (toRef.current) {
+            toRef.current.value = "0"
+        }
+
+        handler(fromInput, toInput, true)
     }
 
     useEffect(() => {
@@ -64,6 +77,7 @@ export const NumberRangeFilter = ({ heading, handler }: { heading: string, handl
                             From
                         </label>
                         <input
+                            ref={fromRef}
                             type="number"
                             id="from"
                             className="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
@@ -74,14 +88,15 @@ export const NumberRangeFilter = ({ heading, handler }: { heading: string, handl
                     </div>
                     <div>
                         <label
-                            htmlFor="from"
+                            htmlFor="to"
                             className="block mb-2 text-sm font-medium text-white text-left"
                         >
                             To
                         </label>
                         <input
+                            ref={toRef}
                             type="number"
-                            id="from"
+                            id="to"
                             className="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                             placeholder="0"
                             min="0"

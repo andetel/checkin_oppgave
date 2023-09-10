@@ -1,4 +1,3 @@
-import {StarshipOrVehicle} from "../interfaces/StarshipOrVehicle";
 import {RootStore} from "./root.store";
 import {makeAutoObservable} from "mobx";
 import {Vehicle} from "../interfaces/Vehicle";
