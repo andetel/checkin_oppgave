@@ -3,9 +3,11 @@ import {ShoppingCartList} from "../components/ShoppingCartList";
 import {observer} from "mobx-react";
 import {useStores} from "../context/storesContext";
 import {formatNumber} from "../formatNumber";
+import {InputWithButton} from "../components/Filter/InputWithButton";
+import React from "react";
 
 export const ShoppingCart = observer(() => {
-    const {cartStore} = useStores()
+    const {cartStore, vehicleStore} = useStores()
 
     return (
         <>

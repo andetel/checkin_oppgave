@@ -4,11 +4,15 @@ import {makeAutoObservable, runInAction} from "mobx";
 import {StarshipOrVehicle} from "../interfaces/StarshipOrVehicle";
 import {RootStore} from "./root.store";
 import {Starship} from "../interfaces/Starship";
+import {Vehicle} from "../interfaces/Vehicle";
 
 export class VehicleStore {
     rootStore: RootStore
-    vehicles: StarshipOrVehicle[] = []
-    vehiclesDisplayed: StarshipOrVehicle[] = []
+    vehicles: Vehicle[] = []
+    vehiclesDisplayed: Vehicle[] = []
+
+    discountApplied: boolean = false
+    vatApplied: boolean = false
 
     FILTERS = [
         {
@@ -53,7 +57,7 @@ export class VehicleStore {
         runInAction(this.prefetchData)
     }
 
-    createVehicle(vehicle: StarshipOrVehicle) {
+    createVehicle(vehicle: Vehicle) {
         this.vehicles.push(vehicle)
         this.vehiclesDisplayed.push(vehicle)
     }
@@ -62,35 +66,71 @@ export class VehicleStore {
         return this.vehicles.length
     }
 
-    filter() {
-        this.vehiclesDisplayed = this.vehicles.filter(vehicle => {
-            return this.FILTERS.every(filter => {
-                switch (filter.type) {
-                    case "crew":
-                        if (filter.max === 0 && filter.min === 0) {
-                            return vehicle
-                        } else {
-                            // @ts-ignore
-                            return (parseInt(vehicle.crew) >= filter.min && parseInt(vehicle.crew) <= filter.max) ? vehicle : null
-                        }
-                    case "cost":
-                        if (filter.max === 0 && filter.min === 0) {
-                            return vehicle
-                        } else {
-                            // @ts-ignore
-                            return (vehicle.costInCredits >= filter.min && vehicle.costInCredits <= filter.max) ? vehicle : null
-                        }
-                    case "speed":
-                        if (filter.max === 0 && filter.min === 0) {
-                            return vehicle
-                        } else {
-                            // @ts-ignore
-                            return (vehicle.maxAtmospheringSpeed >= filter.min && vehicle.maxAtmospheringSpeed <= filter.max) ? vehicle : null
-                        }
-                }
-            })
+    applyDiscount(code: string) {
+        if (code !== 'CEC') {
+            return -1
+        }
+
+        if (this.discountApplied) {
+            return 0
+        }
+
+        this.discountApplied = true
+        this.vehiclesDisplayed.forEach(vehicle => {
+            if (vehicle.manufacturers.includes("Corellian Engineering Corporation")) {
+                vehicle.discountedPrice = vehicle.costInCredits * 0.85
+                vehicle.discounted = true
+            }
         })
     }
+
+    toggleVAT() {
+        if (!this.vatApplied) {
+            this.vatApplied = true
+            this.vehiclesDisplayed.forEach(vehicle => {
+                if (vehicle.costInCredits !== null) {
+                    vehicle.costInCredits = vehicle.costInCredits * 1.25
+                }
+            })
+        } else {
+            this.vatApplied = false
+            this.vehiclesDisplayed.forEach(vehicle => {
+                if (vehicle.costInCredits !== null) {
+                    vehicle.costInCredits = vehicle.costInCredits / 125 * 100
+                }
+            })
+        }
+    }
+
+    // filter() {
+    //     this.vehiclesDisplayed = this.vehicles.filter(vehicle => {
+    //         return this.FILTERS.every(filter => {
+    //             switch (filter.type) {
+    //                 case "crew":
+    //                     if (filter.max === 0 && filter.min === 0) {
+    //                         return vehicle
+    //                     } else {
+    //                         // @ts-ignore
+    //                         return (parseInt(vehicle.crew) >= filter.min && parseInt(vehicle.crew) <= filter.max) ? vehicle : null
+    //                     }
+    //                 case "cost":
+    //                     if (filter.max === 0 && filter.min === 0) {
+    //                         return vehicle
+    //                     } else {
+    //                         // @ts-ignore
+    //                         return (vehicle.costInCredits >= filter.min && vehicle.costInCredits <= filter.max) ? vehicle : null
+    //                     }
+    //                 case "speed":
+    //                     if (filter.max === 0 && filter.min === 0) {
+    //                         return vehicle
+    //                     } else {
+    //                         // @ts-ignore
+    //                         return (vehicle.maxAtmospheringSpeed >= filter.min && vehicle.maxAtmospheringSpeed <= filter.max) ? vehicle : null
+    //                     }
+    //             }
+    //         })
+    //     })
+    // }
 
     prefetchData = () => {
         fetchStarships()

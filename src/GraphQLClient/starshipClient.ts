@@ -1,10 +1,11 @@
 import {GraphQLClient, gql} from "graphql-request";
 import {Starship} from "../interfaces/Starship";
 import {GraphQLStarshipResponse} from "../interfaces/GraphQLStarshipResponse";
+import {Vehicle} from "../interfaces/Vehicle";
 
 const client = new GraphQLClient("https://swapi-graphql.netlify.app/.netlify/functions/index")
 
-export const fetchStarships = async (): Promise<Starship[]> => {
+export const fetchStarships = async (): Promise<Vehicle[]> => {
     const query = gql`
         {
             allStarships {

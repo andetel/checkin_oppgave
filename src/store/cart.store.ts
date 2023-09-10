@@ -1,10 +1,11 @@
 import {StarshipOrVehicle} from "../interfaces/StarshipOrVehicle";
 import {RootStore} from "./root.store";
 import {makeAutoObservable} from "mobx";
+import {Vehicle} from "../interfaces/Vehicle";
 
 export class CartStore {
     rootStore: RootStore
-    items: StarshipOrVehicle[] = []
+    items: Vehicle[] = []
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore
@@ -18,14 +19,18 @@ export class CartStore {
     get totalCost() {
         let total = 0
 
-        this.items.forEach((data) => {
-            total += data.costInCredits
+        this.items.forEach((vehicle) => {
+            if (vehicle.discounted) {
+                total += vehicle.discountedPrice
+            } else {
+                total += vehicle.costInCredits
+            }
         })
 
         return total
     }
 
-    addItem(vehicle: StarshipOrVehicle) {
+    addItem(vehicle: Vehicle) {
         this.items.push(vehicle)
     }
 }

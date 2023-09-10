@@ -1,7 +1,8 @@
-import {Starship} from "./Starship";
+// import {Starship} from "./Starship";
+import {Vehicle} from "./Vehicle";
 
 export interface GraphQLStarshipResponse {
     allStarships: {
-        starships: Array<Starship>
+        starships: Vehicle[]
     }
 }

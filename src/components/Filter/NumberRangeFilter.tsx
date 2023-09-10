@@ -22,11 +22,7 @@ export const NumberRangeFilter = ({ heading, handler }: { heading: string, handl
     }
 
     useEffect(() => {
-        if (fromInput !== 0 || toInput !== 0) {
-            if (fromInput <= toInput) {
-                handler(fromInput, toInput)
-            }
-        }
+        handler(fromInput, toInput)
     }, [fromInput, toInput])
 
 
