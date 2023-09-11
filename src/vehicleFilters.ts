@@ -1,4 +1,10 @@
 export const vehicleFilters = {
+    crew: {
+        name: "crew",
+        active: false,
+        min: undefined as number | undefined,
+        max: undefined as number | undefined
+    },
     cost: {
         name: "cost",
         active: false,

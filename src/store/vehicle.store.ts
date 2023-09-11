@@ -67,9 +67,32 @@ export class VehicleStore {
     }
 
     filter() {
-        const { cost, atmosphereSpeed, cargoCapacity, length } = vehicleFilters
+        const {
+            crew,
+            cost,
+            atmosphereSpeed,
+            cargoCapacity,
+            length
+        } = vehicleFilters
 
         this.vehiclesDisplayed = this.vehicles
+            .filter(vehicle => {
+                if (crew.active && (crew.max !== undefined && crew.min !== undefined)) {
+                    if (vehicle.crew.includes("-")) {
+                        let crewFrom = vehicle.crew.split("-")[0]
+                        let crewTo= vehicle.crew.split("-")[1]
+
+                        return parseInt(crewFrom) >= crew.min && parseInt(crewTo) <= crew.max
+                    } else if (vehicle.crew.includes(",")) {
+                        let newCrew = parseInt(vehicle.crew.split(",").join(""))
+
+                        return newCrew >= crew.min && newCrew <= crew.max
+                    } else {
+                        return parseInt(vehicle.crew) >= crew.min && parseInt(vehicle.crew) <= crew.max
+                    }
+                }
+                return true
+            })
             .filter(vehicle => {
                 if (cost.active && (cost.max !== undefined && cost.min !== undefined)) {
                     return vehicle.costInCredits >= cost.min && vehicle.costInCredits <= cost.max

@@ -18,7 +18,12 @@ export const Card = observer(({vehicle, inCart}: {vehicle: Vehicle, inCart: bool
                             Crew
                         </dt>
                         <dd className="text-lg font-semibold">
-                            { vehicle.crew }
+                            { vehicle.crew.includes("-") &&
+                                vehicle.crew.split("-").join(" - ")
+                            }
+                            { !vehicle.crew.includes("-") &&
+                                vehicle.crew
+                            }
                         </dd>
                     </div>
                     <div className="flex flex-col py-3">

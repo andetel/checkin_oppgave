@@ -2,15 +2,30 @@ import {ToggleButton} from "../components/ToggleButton";
 import {NumberRangeFilter} from "../components/Filter/NumberRangeFilter";
 import {CardList} from "../components/CardList";
 import {InputWithButton} from "../components/Filter/InputWithButton";
-import React, {useCallback, useEffect} from "react";
+import React from "react";
 import {useStores} from "../context/storesContext";
 import {vehicleFilters} from "../vehicleFilters";
 
 export const HomePage = () => {
     const {vehicleStore} = useStores()
 
-    const filterByCrewMembers = (from: number, to: number) => {
-        return 0
+    const filterByCrewMembers = (from: number | undefined, to: number | undefined, reset: boolean = false) => {
+        const {crew} = vehicleFilters
+
+        if (reset) {
+            crew.active = false
+            crew.min = undefined
+            crew.max = undefined
+        } else {
+            crew.min = from
+            crew.max = to
+
+            if (!crew.active) {
+                crew.active = true
+            }
+        }
+
+        vehicleStore.filter()
     }
 
     const filterByCost = (from: number | undefined, to: number | undefined, reset: boolean = false) => {
@@ -96,10 +111,6 @@ export const HomePage = () => {
     const toggleVAT = (show: boolean) => {
         vehicleStore.toggleVAT()
     }
-
-    useEffect(() => {
-        console.log(vehicleStore.vehiclesDisplayed)
-    }, [vehicleStore.vehiclesDisplayed])
 
     return (
         <div className="flex flex-col w-screen pt-20 border-gray-200 bg-gray-900">
