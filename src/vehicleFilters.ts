@@ -28,5 +28,10 @@ export const vehicleFilters = {
         active: false,
         min: undefined as number | undefined,
         max: undefined as number | undefined
+    },
+    vehicleClass: {
+        name: "vehicle_class",
+        active: false,
+        value: undefined as unknown as string
     }
 }

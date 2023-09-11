@@ -52,6 +52,19 @@ export const Card = observer(({vehicle, inCart}: {vehicle: Vehicle, inCart: bool
                     </div>
                     <div className="flex flex-col pt-3">
                         <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">
+                            Vehicle type
+                        </dt>
+                        <dd className="text-lg font-semibold">
+                            { vehicle.vehicleClassType === "air" &&
+                                "Air"
+                            }
+                            { vehicle.vehicleClassType === "land" &&
+                                "Land"
+                            }
+                        </dd>
+                    </div>
+                    <div className="flex flex-col pt-3">
+                        <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">
                             Manufacturers
                         </dt>
                         <dd className="text-lg font-semibold">

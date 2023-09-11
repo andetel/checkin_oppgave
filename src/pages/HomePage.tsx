@@ -5,6 +5,7 @@ import {InputWithButton} from "../components/Filter/InputWithButton";
 import React from "react";
 import {useStores} from "../context/storesContext";
 import {vehicleFilters} from "../vehicleFilters";
+import {RadioButtonFilter} from "../components/Filter/RadioButtonFilter";
 
 export const HomePage = () => {
     const {vehicleStore} = useStores()
@@ -104,6 +105,42 @@ export const HomePage = () => {
         vehicleStore.filter()
     }
 
+    const filterByVehicleClass = (value: string) => {
+        const {vehicleClass} = vehicleFilters
+
+        if (value === "both") {
+            vehicleClass.active = false
+            vehicleClass.value = undefined as unknown as string
+        } else {
+            vehicleClass.value = value
+
+            if (!vehicleClass.active) {
+                vehicleClass.active = true
+            }
+        }
+
+        vehicleStore.filter()
+    }
+
+    const landAirOptions = [
+        {
+            name: "land-air",
+            label: "Air",
+            value: "air"
+        },
+        {
+            name: "land-air",
+            label: "Land",
+            value: "land"
+        },
+        {
+            name: "land-air",
+            label: "Both",
+            value: "both",
+            checked: true
+        }
+    ]
+
     const applyDiscount = (discountCode: string) => {
         vehicleStore.applyDiscount(discountCode)
     }
@@ -115,12 +152,13 @@ export const HomePage = () => {
     return (
         <div className="flex flex-col w-screen pt-20 border-gray-200 bg-gray-900">
             <ToggleButton label="Toggle VAT" handler={toggleVAT} />
-            <div className="flex items-start justify-center gap-3">
+            <div className="flex items-start justify-center flex-wrap gap-3">
                 <NumberRangeFilter heading="crew members" handler={filterByCrewMembers} />
                 <NumberRangeFilter heading="cost" handler={filterByCost} />
                 <NumberRangeFilter heading="atmosphere speed" handler={filterByAtmosphereSpeed} />
                 <NumberRangeFilter heading="cargo capacity" handler={filterByCargoCapacity} />
                 <NumberRangeFilter heading="length" handler={filterByLength} />
+                <RadioButtonFilter heading="vehicle class" options={landAirOptions} handler={filterByVehicleClass} />
             </div>
             <div className="flex justify-center mt-3">
                 <CardList />

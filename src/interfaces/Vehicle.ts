@@ -8,5 +8,7 @@ export interface Vehicle {
     manufacturers: Array<string>,
     name: string,
     discounted: boolean,
-    discountedPrice: number
+    discountedPrice: number,
+    vehicleClass: string,
+    vehicleClassType: string
 }

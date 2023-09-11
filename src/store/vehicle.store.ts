@@ -4,6 +4,7 @@ import {makeAutoObservable, runInAction} from "mobx";
 import {RootStore} from "./root.store";
 import {Vehicle} from "../interfaces/Vehicle";
 import {vehicleFilters} from "../vehicleFilters";
+import {landOrAir} from "../landOrAir";
 
 export class VehicleStore {
     rootStore: RootStore
@@ -21,6 +22,9 @@ export class VehicleStore {
 
     createVehicle(vehicle: Vehicle) {
         if (vehicle.costInCredits === null) vehicle.costInCredits = 0
+
+        if (landOrAir.air.includes(vehicle.vehicleClass)) vehicle.vehicleClassType = "air"
+        else vehicle.vehicleClassType = "land"
 
         this.vehicles.push(vehicle)
         this.vehiclesDisplayed.push(vehicle)
@@ -72,7 +76,8 @@ export class VehicleStore {
             cost,
             atmosphereSpeed,
             cargoCapacity,
-            length
+            length,
+            vehicleClass
         } = vehicleFilters
 
         this.vehiclesDisplayed = this.vehicles
@@ -114,6 +119,12 @@ export class VehicleStore {
             .filter(vehicle => {
                 if (cargoCapacity.active && (cargoCapacity.max !== undefined && cargoCapacity.min !== undefined)) {
                     return vehicle.cargoCapacity >= cargoCapacity.min && vehicle.cargoCapacity <= cargoCapacity.max
+                }
+                return true
+            })
+            .filter(vehicle => {
+                if (vehicleClass.active && vehicleClass.value !== undefined) {
+                    return vehicle.vehicleClassType === vehicleClass.value
                 }
                 return true
             })

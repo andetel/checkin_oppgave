@@ -15,7 +15,8 @@ export const fetchVehicles = async (): Promise<Vehicle[]> => {
                     length,
                     manufacturers,
                     maxAtmospheringSpeed,
-                    name
+                    name,
+                    vehicleClass
                 }
             }
         }
