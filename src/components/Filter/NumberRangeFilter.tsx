@@ -6,8 +6,8 @@ export const NumberRangeFilter = ({ heading, handler }: { heading: string, handl
     const fromRef = useRef<null | HTMLInputElement>(null)
     const toRef = useRef<null | HTMLInputElement>(null)
 
-    const [fromInput, setFromInput] = useState<number>(0)
-    const [toInput, setToInput] = useState<number>(0)
+    const [fromInput, setFromInput] = useState<undefined | number>(undefined)
+    const [toInput, setToInput] = useState<undefined | number>(undefined)
 
     const toggleDropdown = () => {
         if (dropdown.current?.classList.contains("hidden")) {
@@ -20,22 +20,28 @@ export const NumberRangeFilter = ({ heading, handler }: { heading: string, handl
     }
 
     const reset = () => {
-        setFromInput(0)
-        setToInput(0)
+        setFromInput(undefined)
+        setToInput(undefined)
 
         if (fromRef.current) {
-            fromRef.current.value = "0"
+            fromRef.current.placeholder = "0"
         }
 
         if (toRef.current) {
-            toRef.current.value = "0"
+            toRef.current.placeholder = "0"
         }
 
         handler(fromInput, toInput, true)
     }
 
     useEffect(() => {
-        handler(fromInput, toInput)
+        if (fromInput !== undefined && toInput !== undefined) {
+            handler(fromInput, toInput)
+        } else if (fromInput !== undefined && toInput === undefined) {
+            handler(fromInput, 0)
+        } else if (fromInput === undefined && toInput !== undefined) {
+            handler(0, toInput)
+        }
     }, [fromInput, toInput])
 
 
@@ -83,7 +89,9 @@ export const NumberRangeFilter = ({ heading, handler }: { heading: string, handl
                             className="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                             placeholder="0"
                             min="0"
-                            onChange={(event) => setFromInput(parseInt(event.target.value))}
+                            onChange={(event) => {
+                                setFromInput(parseInt(event.target.value))
+                            }}
                         />
                     </div>
                     <div>
@@ -100,7 +108,9 @@ export const NumberRangeFilter = ({ heading, handler }: { heading: string, handl
                             className="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                             placeholder="0"
                             min="0"
-                            onChange={(event) => setToInput(parseInt(event.target.value))}
+                            onChange={(event) => {
+                                setToInput(parseInt(event.target.value))
+                            }}
                         />
                     </div>
                 </div>

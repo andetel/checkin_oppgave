@@ -20,6 +20,8 @@ export class VehicleStore {
     }
 
     createVehicle(vehicle: Vehicle) {
+        if (vehicle.costInCredits === null) vehicle.costInCredits = 0
+
         this.vehicles.push(vehicle)
         this.vehiclesDisplayed.push(vehicle)
     }
@@ -65,18 +67,33 @@ export class VehicleStore {
     }
 
     filter() {
-        this.vehiclesDisplayed = this.vehicles.filter(vehicle => {
-            for (const [key, value] of Object.entries(vehicleFilters)) {
-                if (value.active) {
-                    switch (value.name) {
-                        case "cost":
-                            return vehicle.costInCredits >= value.min && vehicle.costInCredits <= value.max
-                    }
-                } else {
-                    return vehicle
+        const { cost, atmosphereSpeed, cargoCapacity, length } = vehicleFilters
+
+        this.vehiclesDisplayed = this.vehicles
+            .filter(vehicle => {
+                if (cost.active && (cost.max !== undefined && cost.min !== undefined)) {
+                    return vehicle.costInCredits >= cost.min && vehicle.costInCredits <= cost.max
                 }
-            }
-        })
+                return true
+            })
+            .filter(vehicle => {
+                if (atmosphereSpeed.active && (atmosphereSpeed.max !== undefined && atmosphereSpeed.min !== undefined)) {
+                    return vehicle.maxAtmospheringSpeed >= atmosphereSpeed.min && vehicle.maxAtmospheringSpeed <= atmosphereSpeed.max
+                }
+                return true
+            })
+            .filter(vehicle => {
+                if (length.active && (length.max !== undefined && length.min !== undefined)) {
+                    return vehicle.length >= length.min && vehicle.length <= length.max
+                }
+                return true
+            })
+            .filter(vehicle => {
+                if (cargoCapacity.active && (cargoCapacity.max !== undefined && cargoCapacity.min !== undefined)) {
+                    return vehicle.cargoCapacity >= cargoCapacity.min && vehicle.cargoCapacity <= cargoCapacity.max
+                }
+                return true
+            })
     }
 
     prefetchData = () => {

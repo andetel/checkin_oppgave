@@ -15,7 +15,7 @@ export class CartStore {
         return this.items.length
     }
 
-    get totalCost() {
+    get totalCostExclVAT() {
         let total = 0
 
         this.items.forEach((vehicle) => {
@@ -23,6 +23,20 @@ export class CartStore {
                 total += vehicle.discountedPrice
             } else {
                 total += vehicle.costInCredits
+            }
+        })
+
+        return total
+    }
+
+    get totalCostInclVAT() {
+        let total = 0
+
+        this.items.forEach((vehicle) => {
+            if (vehicle.discounted) {
+                total += vehicle.discountedPrice * 1.25
+            } else {
+                total += vehicle.costInCredits * 1.25
             }
         })
 

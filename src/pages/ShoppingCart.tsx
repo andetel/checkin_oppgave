@@ -3,21 +3,27 @@ import {ShoppingCartList} from "../components/ShoppingCartList";
 import {observer} from "mobx-react";
 import {useStores} from "../context/storesContext";
 import {formatNumber} from "../formatNumber";
-import {InputWithButton} from "../components/Filter/InputWithButton";
 import React from "react";
 
 export const ShoppingCart = observer(() => {
-    const {cartStore, vehicleStore} = useStores()
+    const {cartStore} = useStores()
 
     return (
-        <>
-            <div className="flex justify-center w-screen pt-20 bg-white border-gray-200 dark:bg-gray-900">
+        <div className="bg-gray-900 min-h-fit">
+            <div className="flex justify-center w-screen pt-20 border-gray-200 bg-gray-900">
                 <ShoppingCartList />
             </div>
-            <h3>Total: {formatNumber(cartStore.totalCost).toString()}</h3>
-            <Link to={`/shopping_cart/checkout`} className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">
-                Checkout
-            </Link>
-        </>
+            <div className="mt-5">
+                <h3 className="text-white mb-5">
+                    Total: {formatNumber(cartStore.totalCostExclVAT).toString()}
+                </h3>
+                <Link
+                    to={`/shopping_cart/checkout`}
+                    className="inline-flex border focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 mb-5 text-center border-green-500 text-green-500 hover:text-white hover:bg-green-600 focus:ring-green-800"
+                >
+                    Checkout
+                </Link>
+            </div>
+        </div>
     )
 })

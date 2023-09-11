@@ -1,9 +1,11 @@
 import {InputWithButton} from "../components/Filter/InputWithButton";
 import React from "react";
 import {useStores} from "../context/storesContext";
+import {RecieptItem} from "../components/RecieptItem";
+import {formatNumber} from "../formatNumber";
 
 export const Checkout = () => {
-    const {vehicleStore} = useStores()
+    const {vehicleStore, cartStore} = useStores()
 
     const applyDiscount = (discountCode: string) => {
         vehicleStore.applyDiscount(discountCode)
@@ -11,7 +13,22 @@ export const Checkout = () => {
 
 
     return (
-        <>
+        <div className="bg-gray-900 min-h-screen flex items-center flex-col justify-center">
+            <ul className="max-w-md divide-y divide-gray-700">
+                {
+                    cartStore.items.map(item => (
+                        <RecieptItem name={item.name} price={item.costInCredits} />
+                    ))
+                }
+            </ul>
+            <section className="text-white">
+                <div>
+                    Total excl. VAT: {formatNumber(cartStore.totalCostExclVAT)}
+                </div>
+                <div>
+                    Toatl incl: VAT: {formatNumber(cartStore.totalCostInclVAT)}
+                </div>
+            </section>
             {!vehicleStore.discountApplied &&
                 <InputWithButton
                     label="Discount code:"
@@ -21,6 +38,6 @@ export const Checkout = () => {
                     handler={applyDiscount}
                 />
             }
-        </>
+        </div>
     )
 }

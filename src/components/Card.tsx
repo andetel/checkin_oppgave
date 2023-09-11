@@ -56,7 +56,7 @@ export const Card = observer(({vehicle, inCart}: {vehicle: Vehicle, inCart: bool
                 </dl>
                 <div className="flex items-center justify-between mt-5">
                     {
-                        (vehicle.costInCredits === null)
+                        (vehicle.costInCredits === 0)
                             ?
                         (<span className="text-3xl font-bold text-white">Free</span>)
                             :

@@ -1,7 +1,9 @@
+import React from "react";
 import {useStores} from "../context/storesContext";
 import {Card} from "./Card";
+import {observer} from "mobx-react";
 
-export const ShoppingCartList = () => {
+export const ShoppingCartList = observer(() => {
     const {cartStore} = useStores()
 
     return (
@@ -13,4 +15,4 @@ export const ShoppingCartList = () => {
             }
         </div>
     )
-}
+})
