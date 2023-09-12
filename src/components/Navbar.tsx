@@ -1,9 +1,21 @@
 import {Link} from "react-router-dom";
 import {useStores} from "../context/storesContext";
 import {observer} from "mobx-react";
+import {useRef} from "react";
 
 export const Navbar = observer(() => {
     const {cartStore} = useStores()
+    const menu = useRef<null | HTMLDivElement>(null)
+
+    const toggleMenu = () => {
+        if (menu.current) {
+            if (menu.current.classList.contains("hidden")) {
+                menu.current.classList.remove("hidden")
+            } else {
+                menu.current.classList.add("hidden")
+            }
+        }
+    }
 
     return (
         <nav className="border-gray-200 bg-gray-900">
@@ -13,9 +25,12 @@ export const Navbar = observer(() => {
                     <span
                         className="self-center text-2xl font-semibold whitespace-nowrap text-white">Flowbite</span>
                 </a>
-                <button data-collapse-toggle="navbar-default" type="button"
-                        className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
-                        aria-controls="navbar-default" aria-expanded="false">
+                <button
+                    type="button"
+                    className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
+                    aria-controls="navbar-default" aria-expanded="false"
+                    onClick={toggleMenu}
+                >
                     <span className="sr-only">Open main menu</span>
                     <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                          viewBox="0 0 17 14">
@@ -23,7 +38,10 @@ export const Navbar = observer(() => {
                               d="M1 1h15M1 7h15M1 13h15"/>
                     </svg>
                 </button>
-                <div className="hidden w-full md:block md:w-auto" id="navbar-default">
+                <div
+                    className="hidden w-full md:block md:w-auto"
+                    ref={menu}
+                >
                     <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-gray-800 md:bg-gray-900 border-gray-700">
                         <li>
                             <Link

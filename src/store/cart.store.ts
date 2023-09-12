@@ -43,6 +43,20 @@ export class CartStore {
         return total
     }
 
+    get totalVAT() {
+        let total = 0
+
+        this.items.forEach((vehicle) => {
+            if (vehicle.discounted) {
+                total += vehicle.discountedPrice * 0.25
+            } else {
+                total += vehicle.costInCredits * 0.25
+            }
+        })
+
+        return total
+    }
+
     addItem(vehicle: Vehicle) {
         this.items.push(vehicle)
     }

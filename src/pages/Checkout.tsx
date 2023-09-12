@@ -26,7 +26,10 @@ export const Checkout = () => {
                     Total excl. VAT: {formatNumber(cartStore.totalCostExclVAT)}
                 </div>
                 <div>
-                    Toatl incl: VAT: {formatNumber(cartStore.totalCostInclVAT)}
+                    VAT amount: {formatNumber(cartStore.totalVAT)}
+                </div>
+                <div>
+                    Total incl: VAT: {formatNumber(cartStore.totalCostInclVAT)}
                 </div>
             </section>
             {!vehicleStore.discountApplied &&
